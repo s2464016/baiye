@@ -20,11 +20,25 @@
       height: 100%;
       background: #0f172a;
       display: flex;
+      flex-direction: column; /* 纵向排列 */
       justify-content: center;
       align-items: center;
+      z-index: 9999;
+      cursor: pointer; /* 提示用户可以点击 */
+    }
+    .loading-text {
       font-size: 24px;
       color: #eab308;
-      z-index: 9999;
+      margin-bottom: 20px;
+    }
+    .start-btn {
+      padding: 10px 20px;
+      background: #eab308;
+      color: #0f172a;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
     }
     .hero {
       height: 100vh;
@@ -51,6 +65,15 @@
       line-height: 1.6;
       color: #cbd5e1;
     }
+    /* 音乐控制按钮旋转动画 */
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .playing {
+      animation: rotate 3s linear infinite;
+    }
+
     #music-btn {
       position: fixed;
       bottom: 20px;
@@ -65,30 +88,30 @@
       cursor: pointer;
       z-index: 1000;
       transition: all 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     #music-btn:hover {
       background: #475569;
       transform: scale(1.1);
     }
     @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 2.5rem;
-      }
-      .content {
-        padding: 2rem 1rem;
-      }
-      .content p {
-        font-size: 1rem;
-      }
+      .hero h1 { font-size: 2.5rem; }
+      .content { padding: 2rem 1rem; }
     }
   </style>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
-  <div id="loading">江湖载入中...</div>
+
+  <div id="loading" onclick="startExperience()">
+    <div class="loading-text">江湖载入中...</div>
+    <div class="start-btn">点击获取八音窍</div>
+  </div>
 
   <section class="hero" data-aos="fade-in" data-aos-duration="1000">
-    <h1>百业江湖</h1>
+    <h1>百业《啊》</h1>
   </section>
 
   <section class="content" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
@@ -96,8 +119,9 @@
   </section>
 
   <button id="music-btn" aria-label="切换背景音乐">🔊</button>
+  
   <audio id="bgm" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    <source src="bgm.mp3" type="audio/mpeg">
   </audio>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -108,20 +132,42 @@
       duration: 800,
       easing: 'ease-out-cubic'
     });
-    
-    $(window).on('load', function() {
-      $('#loading').fadeOut(800);
-    });
 
-    $('#music-btn').click(function() {
-      const bgm = $('#bgm')[0];
+    const bgm = document.getElementById('bgm');
+    const musicBtn = $('#music-btn');
+
+    // 定义开始体验的函数
+    function startExperience() {
+      // 隐藏加载页
+      $('#loading').fadeOut(800);
+      
+      // 播放音乐
+      bgm.play().then(() => {
+        musicBtn.addClass('playing');
+      }).catch(e => {
+        console.log("播放被拦截:", e);
+      });
+    }
+
+    // 音乐按钮点击控制
+    musicBtn.click(function(e) {
+      e.stopPropagation(); // 防止触发 body 的点击
       if (bgm.paused) {
-        bgm.play().catch(e => console.log('Autoplay blocked:', e));
-        $(this).text('🔊');
+        bgm.play();
+        $(this).text('🔊').addClass('playing');
       } else {
         bgm.pause();
-        $(this).text('🔇');
+        $(this).text('🔇').removeClass('playing');
       }
+    });
+
+    // 针对移动端和部分浏览器的自动播放策略：点击页面任何地方播放
+    $(document).one('click', function() {
+        if (bgm.paused) {
+            bgm.play().then(() => {
+                musicBtn.addClass('playing');
+            });
+        }
     });
   </script>
 </body>
