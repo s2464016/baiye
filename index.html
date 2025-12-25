@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="en">
+<head>
+    <title>Where Winds Meet</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* 1. 强制覆盖掉模板自带的 preloader，改用我们的点击进入页 */
+        .preloader { display: none !important; }
+
+        #loading {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f172a; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 100000;
+            cursor: pointer;
+        }
+
+        /* 2. 视频高度调整为全屏显示 */
+        .video-hero {
+            position: relative; width: 100%; height: 100vh; 
+            overflow: hidden; background: #000;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading" onclick="startExperience()">
+        <div style="color: #eab308; font-size: 24px; margin-bottom: 20px;">燕云十六声载入中...</div>
+        <div style="padding: 12px 30px; background: #eab308; color: #0f172a; border-radius: 5px; font-weight: bold;">点击开启</div>
+    </div>
+
+    <audio id="bgm" loop><source src="bgm.mp3" type="audio/mpeg"></audio>
+    <button id="music-btn">🔊</button>
+
+      <section class="section section-overlap bg-decorate">
+        <div class="section-overlap-image" style="background-image: url(images/screens-1-1046x720.jpg)"></div>
+        <div class="section-overlap-content">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6 col-lg-5 col-xl-4">
+                <div class="wow-outer">
+                  <h4 class="font-weight-sbold text-primary wow slideInDown">百业《啊》</h4>
+                </div>
+              </div>
+              <div class="col-md-8 col-lg-7 col-xl-6">
+                <h1 class="wow-outer">
+                  <span class="font-weight-bold wow-outer"><span class="wow slideInUp">锦书托云寄</span></span>
+                  <span class="font-weight-exlight wow-outer"><span class="wow slideInUp" data-wow-delay=".1s">千里共此时</span></span>
+                </h1>
+              </div>
+              <div class="col-md-6 col-lg-5 col-xl-4 col-offset-1">
+                <div class="wow-outer">
+                  <h4 class="font-weight-light wow slideInUp" data-wow-delay=".2s">江湖有你们才完美</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+<div id="danmaku-container" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:99; pointer-events:none;"></div>
+<style>
+    /* 弹幕基础样式 */
+    .barrage {
+        position: fixed;
+        white-space: nowrap;
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px #000;
+        z-index: 9999;
+        user-select: none;
+        pointer-events: none;
+        animation: moveLinear linear forwards;
+    }
+
+    @keyframes moveLinear {
+        from { transform: translateX(100vw); }
+        to { transform: translateX(-100%); }
+    }
+</style>
+
+<script>
+    const bTexts = [
+        "百业江湖，聚义此时！",
+        "无敌了",
+        "老带新共成长",
+        "666666",
+        "下一发就能出八音窍了！",
+        "啊啊啊啊啊啊",
+        "心理委员，我不得劲",
+        "？？？",
+        "好困",
+        "希望没起床的人从床上掉下去",
+        "今天又是早八",
+        "百业本请@我"
+    ];
+
+    function createBarrage() {
+        const text = bTexts[Math.floor(Math.random() * bTexts.length)];
+        const div = document.createElement('div');
+        div.className = 'barrage';
+        div.innerText = text;
+        
+        // 随机高度和速度
+        const top = Math.random() * 80 + '%'; 
+        const duration = Math.random() * 5 + 5 + 's'; // 5-10秒飘完
+        
+        div.style.top = top;
+        div.style.animationDuration = duration;
+        div.style.color = ['#fff', '#eab308', '#00ff00'][Math.floor(Math.random() * 3)];
+
+        document.body.appendChild(div);
+
+        // 动画结束后移除元素，释放内存
+        setTimeout(() => div.remove(), 15000);
+    }
+
+    // 每隔 2 秒自动出一个弹幕
+    setInterval(createBarrage, 2000);
+</script>
+
+<section class="section section-md bg-default text-center">
+  <div class="container">
+    <h3 class="wow-outer"><span class="wow slideInUp">百业成员 & 大合影</span></h3>
+    <div class="row justify-content-center mt-4">
+      <div class="col-12 wow-outer">
+        <div class="wow slideInUp">
+          <img src="images/screens-1-831x1200.jpg" alt="" style="width: 100%; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-lg bg-default">
+        <div class="container">
+          <div class="row row-50">
+            <div class="col-12 text-center">
+              <h3 class="section-title wow-outer"><span class="wow slideInUp">社员风采</span></h3>
+            </div>
+            <div class="col-12">
+              <div class="row row-30">
+                
+                <div class="col-12 col-sm-6 col-lg-4 wow-outer">
+                  <article class="thumbnail-corporate wow slideInDown" data-wow-delay=".1s">
+                    <img class="thumbnail-corporate-image" src="images/member-1.jpg" alt="" width="370" height="256"/>
+                    <div class="thumbnail-corporate-caption">
+                      <p class="thumbnail-corporate-title"><a href="#">成员名字 01</a></p>
+                      <p>111111</p>
+                      <a class="thumbnail-corporate-link" href="images/member-2.jpg" data-lightgallery="item"><span class="icon mdi mdi-magnify"></span></a>
+                    </div>
+                  </article>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4 wow-outer">
+                  <article class="thumbnail-corporate wow slideInDown" data-wow-delay=".1s">
+                    <img class="thumbnail-corporate-image" src="images/member-2.jpg" alt="" width="370" height="256"/>
+                    <div class="thumbnail-corporate-caption">
+                      <p class="thumbnail-corporate-title"><a href="#">成员名字 02</a></p>
+                      <p>开荒先锋，操作犀利的输出位。</p>
+                      <a class="thumbnail-corporate-link" href="images/member-2.jpg" data-lightgallery="item"><span class="icon mdi mdi-magnify"></span></a>
+                    </div>
+                  </article>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4 wow-outer">
+                  <article class="thumbnail-corporate wow slideInDown" data-wow-delay=".2s">
+                    <img class="thumbnail-corporate-image" src="images/member-3.jpg" alt="" width="370" height="256"/>
+                    <div class="thumbnail-corporate-caption">
+                      <p class="thumbnail-corporate-title"><a href="#">成员名字 03</a></p>
+                      <p>资深风景党，走遍江湖每一个角落。</p>
+                      <a class="thumbnail-corporate-link" href="images/member-3.jpg" data-lightgallery="item"><span class="icon mdi mdi-magnify"></span></a>
+                    </div>
+                  </article>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4 wow-outer">
+                  <article class="thumbnail-corporate wow slideInDown" data-wow-delay=".1s">
+                    <img class="thumbnail-corporate-image" src="images/member-4.jpg" alt="" width="370" height="256"/>
+                    <div class="thumbnail-corporate-caption">
+                      <p class="thumbnail-corporate-title"><a href="#">成员名字 04</a></p>
+                      <p>有福同享，有难同当，百业是我家。</p>
+                      <a class="thumbnail-corporate-link" href="images/member-4.jpg" data-lightgallery="item"><span class="icon mdi mdi-magnify"></span></a>
+                    </div>
+                  </article>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4 wow-outer">
+                  <article class="thumbnail-corporate wow slideInDown" data-wow-delay=".2s">
+                    <img class="thumbnail-corporate-image" src="images/member-5.jpg" alt="" width="370" height="256"/>
+                    <div class="thumbnail-corporate-caption">
+                      <p class="thumbnail-corporate-title"><a href="#">成员名字 05</a></p>
+                      <p>享受悠闲自在的江湖生活，不卷不累。</p>
+                      <a class="thumbnail-corporate-link" href="images/member-5.jpg" data-lightgallery="item"><span class="icon mdi mdi-magnify"></span></a>
+                    </div>
+                  </article>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4 wow-outer">
+                  <article class="thumbnail-corporate wow slideInDown" data-wow-delay=".3s">
+                    <img class="thumbnail-corporate-image" src="images/member-6.jpg" alt="" width="370" height="256"/>
+                    <div class="thumbnail-corporate-caption">
+                      <p class="thumbnail-corporate-title"><a href="#">成员名字 06</a></p>
+                      <p>老带新专业户，江湖百晓生。</p>
+                      <a class="thumbnail-corporate-link" href="images/member-6.jpg" data-lightgallery="item"><span class="icon mdi mdi-magnify"></span></a>
+                    </div>
+                  </article>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4 wow-outer">
+                  <article class="thumbnail-corporate wow slideInDown" data-wow-delay=".1s">
+                    <img class="thumbnail-corporate-image" src="images/member-7.jpg" alt="" width="370" height="256"/>
+                    <div class="thumbnail-corporate-caption">
+                      <p class="thumbnail-corporate-title"><a href="#">成员名字 07</a></p>
+                      <p>只要我跑得够快，寂寞就追不上我。</p>
+                      <a class="thumbnail-corporate-link" href="images/member-7.jpg" data-lightgallery="item"><span class="icon mdi mdi-magnify"></span></a>
+                    </div>
+                  </article>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4 wow-outer">
+                  <article class="thumbnail-corporate wow slideInDown" data-wow-delay=".2s">
+                    <img class="thumbnail-corporate-image" src="images/member-8.jpg" alt="" width="370" height="256"/>
+                    <div class="thumbnail-corporate-caption">
+                      <p class="thumbnail-corporate-title"><a href="#">成员名字 08</a></p>
+                      <p>闲来垂钓，静坐看云，自在百业。</p>
+                      <a class="thumbnail-corporate-link" href="images/member-8.jpg" data-lightgallery="item"><span class="icon mdi mdi-magnify"></span></a>
+                    </div>
+                  </article>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4 wow-outer">
+                  <article class="thumbnail-corporate wow slideInDown" data-wow-delay=".3s">
+                    <img class="thumbnail-corporate-image" src="images/member-9.jpg" alt="" width="370" height="256"/>
+                    <div class="thumbnail-corporate-caption">
+                      <p class="thumbnail-corporate-title"><a href="#">成员名字 09</a></p>
+                      <p>为了公会的荣耀，冲锋在第一线！</p>
+                      <a class="thumbnail-corporate-link" href="images/member-9.jpg" data-lightgallery="item"><span class="icon mdi mdi-magnify"></span></a>
+                    </div>
+                  </article>
+                </div>
+
+  <section class="content" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+    <p>老带新共成长，拒绝强制活动，享受悠闲自在的江湖生活，这是百业的特色！</p>
+
+<section class="section section-md bg-gray-100">
+  <div class="container">
+    <h3 class="wow-outer text-center"><span class="wow slideInUp">江湖中人，总得说点什么再走吧？</span></h3>
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-10 col-lg-8">
+        
+        <div style="background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+          <div class="form-group">
+            <input type="text" id="guestName" class="form-control" placeholder="江湖称号..." style="margin-bottom: 10px;">
+            <textarea id="guestMsg" class="form-control" rows="3" placeholder="留下你想说的话..."></textarea>
+          </div>
+          <button onclick="saveMessage()" class="btn btn-primary" style="background: #eab308; border: none; margin-top: 10px; width: 100%;">确认发布</button>
+        </div>
+
+        <div id="messageList" style="margin-top: 30px;">
+          </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+  <button id="music-btn" aria-label="切换背景音乐">🔊</button>
+  
+  <audio id="bgm" loop>
+    <source src="bgm.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      once: true,
+      duration: 800,
+      easing: 'ease-out-cubic'
+    });
+
+    const bgm = document.getElementById('bgm');
+    const musicBtn = $('#music-btn');
+
+    // 定义开始体验的函数
+    function startExperience() {
+      // 隐藏加载页
+      $('#loading').fadeOut(800);
+      
+      // 播放音乐
+      bgm.play().then(() => {
+        musicBtn.addClass('playing');
+      }).catch(e => {
+        console.log("播放被拦截:", e);
+      });
+    }
+
+    // 针对移动端和部分浏览器的自动播放策略：点击页面任何地方播放
+    $(document).one('click', function() {
+        if (bgm.paused) {
+            bgm.play().then(() => {
+                musicBtn.addClass('playing');
+            });
+        }
+    });
+
+// 页面加载完成后立即读取已存的留言
+document.addEventListener('DOMContentLoaded', displayMessages);
+
+function saveMessage() {
+    const name = document.getElementById('guestName').value || "无名大侠";
+    const msg = document.getElementById('guestMsg').value;
+    const time = new Date().toLocaleString();
+
+    if (!msg) {
+        alert("江湖中人，总得说点什么再走吧？");
+        return;
+    }
+
+    // 构造留言对象
+    const newMessage = { name, msg, time };
+
+    // 从本地存储读取旧留言，如果没有则创建空数组
+    let localMsgs = JSON.parse(localStorage.getItem('jianghu_msgs')) || [];
+    
+    // 把新留言塞进去
+    localMsgs.unshift(newMessage); // unshift 是让新留言在最上面
+
+    // 重新存入本地存储
+    localStorage.setItem('jianghu_msgs', JSON.stringify(localMsgs));
+
+    // 清空输入框并刷新显示
+    document.getElementById('guestMsg').value = "";
+    displayMessages();
+}
+
+function displayMessages() {
+    const list = document.getElementById('messageList');
+    const localMsgs = JSON.parse(localStorage.getItem('jianghu_msgs')) || [];
+    
+    list.innerHTML = ""; // 先清空
+
+    localMsgs.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.style = "background: #fff; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid #eab308; box-shadow: 0 2px 5px rgba(0,0,0,0.05);";
+        card.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <strong style="color: #0f172a;">${item.name}</strong>
+                <small style="color: #999;">${item.time}</small>
+            </div>
+            <p style="margin: 0; color: #444;">${item.msg}</p>
+            <button onclick="deleteMsg(${index})" style="background: none; border: none; color: #ff4d4d; font-size: 12px; cursor: pointer; padding: 0; margin-top: 5px;">删除</button>
+        `;
+        list.appendChild(card);
+    });
+}
+
+// 增加一个删除功能（毕竟是单机版，你自己说了算）
+function deleteMsg(index) {
+    let localMsgs = JSON.parse(localStorage.getItem('jianghu_msgs'));
+    localMsgs.splice(index, 1);
+    localStorage.setItem('jianghu_msgs', JSON.stringify(localMsgs));
+    displayMessages();
+}
+  </script>
+</body>
+</html>
